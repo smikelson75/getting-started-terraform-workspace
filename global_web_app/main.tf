@@ -1,7 +1,7 @@
 # Provider: GCP
 provider "google" {
-  project = "my-project-id"
-  region  = "us-central1"
+  project = var.project
+  region  = var.gcp_region
   zone    = "us-central1-c"
 }
 
@@ -14,13 +14,13 @@ provider "google" {
 #   VPC
 resource "google_compute_network" "vpc-network" {
   name                    = "vpc-pluralsight"
-  auto_create_subnetworks = false
+  auto_create_subnetworks = var.vpc-auto-create-subnets
 }
 
 #   Subnet
 resource "google_compute_subnetwork" "vpc-subnetwork" {
   name          = "nginx-subnet"
-  ip_cidr_range = "10.0.0.0/24"
+  ip_cidr_range = var.vpc-subnet-cidr-block
   network       = google_compute_network.vpc-network.id
 }
 
@@ -53,11 +53,13 @@ resource "google_compute_firewall" "allow-ssh-for-iap" {
 #   Compute Engine - f1.micro
 resource "google_compute_instance" "web-server-instance" {
   name         = "nginx-instance"
-  machine_type = "f1-micro"
+  machine_type = var.instance-machine-type
+  labels       = local.common_tags
 
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-11"
+      image  = "debian-cloud/debian-11"
+      labels = local.common_tags
     }
   }
 
