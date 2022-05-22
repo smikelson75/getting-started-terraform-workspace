@@ -18,9 +18,11 @@ resource "google_compute_instance" "web-server-instance" {
     subnetwork = google_compute_subnetwork.vpc-subnetwork.id
 
     access_config {
-
+      
     }
   }
+
+  allow_stopping_for_update = true
 
   metadata_startup_script = <<SCRIPT
     sudo apt-get update
@@ -47,12 +49,15 @@ resource "google_compute_instance" "web-server-instance2" {
 
   network_interface {
     network    = google_compute_network.vpc-network.id
-    subnetwork = google_compute_subnetwork.vpc-subnetwork.id
+    subnetwork = google_compute_subnetwork.vpc-subnetwork2.id
 
     access_config {
-
+      
     }
   }
+
+
+  allow_stopping_for_update = true
 
   metadata_startup_script = <<SCRIPT
     sudo apt-get update

@@ -5,3 +5,8 @@ locals {
     billing_code = var.billing_code
   }
 }
+
+resource "random_integer" "rand" {
+    min = 10000
+    max = 99999
+}

@@ -1,9 +1,3 @@
-# Provider: GCP
-provider "google" {
-  project = var.project
-  region  = var.gcp_region
-}
-
 # Data, Secret Manager Secret, provides image os to use on instance
 # data "google_secret_manager_secret_version" "ami" {
 #     secret = "ami"

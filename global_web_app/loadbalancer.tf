@@ -40,7 +40,7 @@ resource "google_compute_backend_service" "usce1c-webserver-backend" {
   port_name = "http"
 
   backend {
-    group =  google_compute_instance_group.usce1c-webservers.id
+    group = google_compute_instance_group.usce1c-webservers.id
   }
 
   backend {
@@ -64,7 +64,7 @@ resource "google_compute_health_check" "webserver-health-check" {
 resource "google_compute_url_map" "webserver-url-map" {
   name            = "webserver-lb"
   default_service = google_compute_backend_service.usce1c-webserver-backend.id
-  
+
 }
 
 ## Target HTTP Proxy
