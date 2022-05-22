@@ -12,19 +12,39 @@ resource "google_compute_instance_group" "usce1c-webservers" {
     port = "80"
   }
 
-  zone = "us-central1-c"
+  zone = data.google_compute_zones.available.names[2]
+}
+
+resource "google_compute_instance_group" "usce1b-webservers" {
+  name        = "gcp-webserver2-group"
+  description = "Terraform test instance group"
+
+  instances = [
+    google_compute_instance.web-server-instance2.id
+  ]
+
+  named_port {
+    name = "http"
+    port = "80"
+  }
+
+  zone = data.google_compute_zones.available.names[1]
 }
 
 ## Backend
 resource "google_compute_backend_service" "usce1c-webserver-backend" {
   name          = "usce1c-webserver-backend"
-  health_checks = [ google_compute_health_check.webserver-health-check.id ]
+  health_checks = [google_compute_health_check.webserver-health-check.id]
 
   protocol  = "HTTP"
   port_name = "http"
 
   backend {
-    group = google_compute_instance_group.usce1c-webservers.id
+    group =  google_compute_instance_group.usce1c-webservers.id
+  }
+
+  backend {
+    group = google_compute_instance_group.usce1b-webservers.id
   }
 }
 
@@ -44,6 +64,7 @@ resource "google_compute_health_check" "webserver-health-check" {
 resource "google_compute_url_map" "webserver-url-map" {
   name            = "webserver-lb"
   default_service = google_compute_backend_service.usce1c-webserver-backend.id
+  
 }
 
 ## Target HTTP Proxy

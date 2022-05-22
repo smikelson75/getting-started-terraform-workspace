@@ -16,9 +16,9 @@ variable "vpc-auto-create-subnets" {
 }
 
 variable "vpc-subnet-cidr-block" {
-  type        = string
-  description = "CIDR Block for NGINX Subnet"
-  default     = "10.0.0.0/24"
+  type        = list(string)
+  description = "CIDR Block for NGINX Subnets"
+  default     = ["10.0.0.0/24", "10.0.1.0/24"]
 }
 
 variable "instance-machine-type" {

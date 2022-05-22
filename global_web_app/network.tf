@@ -2,13 +2,16 @@
 provider "google" {
   project = var.project
   region  = var.gcp_region
-  zone    = "us-central1-c"
 }
 
 # Data, Secret Manager Secret, provides image os to use on instance
 # data "google_secret_manager_secret_version" "ami" {
 #     secret = "ami"
 # }
+
+data "google_compute_zones" "available" {
+  region = var.gcp_region
+}
 
 # Resources
 #   VPC
@@ -20,7 +23,13 @@ resource "google_compute_network" "vpc-network" {
 #   Subnet
 resource "google_compute_subnetwork" "vpc-subnetwork" {
   name          = "nginx-subnet"
-  ip_cidr_range = var.vpc-subnet-cidr-block
+  ip_cidr_range = var.vpc-subnet-cidr-block[0]
+  network       = google_compute_network.vpc-network.id
+}
+
+resource "google_compute_subnetwork" "vpc-subnetwork2" {
+  name          = "nginx-subnet2"
+  ip_cidr_range = var.vpc-subnet-cidr-block[1]
   network       = google_compute_network.vpc-network.id
 }
 
