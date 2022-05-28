@@ -18,7 +18,7 @@ resource "google_compute_instance" "web-server-instance" {
     subnetwork = google_compute_subnetwork.vpc-subnetwork.id
 
     access_config {
-      
+
     }
   }
 
@@ -52,7 +52,7 @@ resource "google_compute_instance" "web-server-instance2" {
     subnetwork = google_compute_subnetwork.vpc-subnetwork2.id
 
     access_config {
-      
+
     }
   }
 
